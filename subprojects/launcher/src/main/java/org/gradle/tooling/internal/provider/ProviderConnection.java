@@ -64,6 +64,8 @@ import java.util.Map;
 
 public class ProviderConnection {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProviderConnection.class);
+    private static final NoOpBuildEventConsumer NO_OP_BUILD_EVENT_CONSUMER = new NoOpBuildEventConsumer();
+
     private final PayloadSerializer payloadSerializer;
     private final LoggingServiceRegistry loggingServices;
     private final DaemonClientFactory daemonClientFactory;
@@ -123,9 +125,8 @@ public class ProviderConnection {
         SerializedPayload serializedAction = payloadSerializer.serialize(clientAction);
         Parameters params = initParams(providerParameters);
         StartParameter startParameter = new ProviderStartParameterConverter().toStartParameter(providerParameters, params.properties);
-        NoOpBuildEventConsumer buildEventConsumer = new NoOpBuildEventConsumer();
         BuildAction action = new ClientProvidedBuildAction(startParameter, serializedAction);
-        return run(action, cancellationToken, buildEventConsumer, providerParameters, params);
+        return run(action, cancellationToken, NO_OP_BUILD_EVENT_CONSUMER, providerParameters, params);
     }
 
     private Object run(BuildAction action, BuildCancellationToken cancellationToken, BuildEventConsumer buildEventConsumer, ProviderOperationParameters providerParameters, Parameters parameters) {
