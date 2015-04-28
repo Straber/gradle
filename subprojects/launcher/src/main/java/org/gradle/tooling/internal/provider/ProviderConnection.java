@@ -121,7 +121,7 @@ public class ProviderConnection {
         List<String> testExcludePatterns = providerParameters.getTestExcludePatterns(null);
         TestConfiguration testConfiguration = null;
         if (testIncludePatterns!=null || testExcludePatterns!=null) {
-            testConfiguration = new TestConfiguration(testIncludePatterns, testExcludePatterns);
+            testConfiguration = new TestConfiguration(testIncludePatterns, testExcludePatterns, providerParameters.isAlwaysRunTests(false));
         }
         BuildAction action = new BuildModelAction(startParameter, modelName, tasks != null, listenToTestProgress, listenToTaskProgress, listenToBuildProgress, testConfiguration);
         return run(action, cancellationToken, buildEventConsumer, providerParameters, params);
