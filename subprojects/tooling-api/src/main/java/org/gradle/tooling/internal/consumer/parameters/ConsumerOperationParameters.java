@@ -334,7 +334,11 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
         return ((CancellationTokenInternal) cancellationToken).getToken();
     }
 
-    public List<String> getTestIncludePatterns() { return testIncludePatterns; }
+    public List<String> getTestIncludePatterns() {
+        return testIncludePatterns;
+    }
 
-    public List<String> getTestExcludePatterns() { return testExcludePatterns; }
+    public List<String> getTestExcludePatterns() {
+        return testExcludePatterns;
+    }
 }
