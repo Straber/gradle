@@ -69,6 +69,7 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
         private List<String> tasks;
         private List<InternalLaunchable> launchables;
         private List<String> testIncludePatterns;
+        private List<String> testExcludePatterns;
 
         private Builder() {
         }
@@ -148,6 +149,11 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
             return this;
         }
 
+        public Builder setTestExcludePatterns(List<String> patterns) {
+            this.testExcludePatterns = patterns;
+            return this;
+        }
+
         public void addProgressListener(ProgressListener listener) {
             progressListeners.add(listener);
         }
@@ -175,7 +181,7 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
             ProgressListenerAdapter progressListenerAdapter = new ProgressListenerAdapter(this.progressListeners);
             BuildProgressListenerAdapter buildProgressListenerAdapter = new BuildProgressListenerAdapter(this.testProgressListeners, this.taskProgressListeners, this.buildProgressListeners);
             return new ConsumerOperationParameters(
-                parameters, stdout, stderr, colorOutput, stdin, javaHome, jvmArguments, arguments, tasks, launchables, testIncludePatterns,
+                parameters, stdout, stderr, colorOutput, stdin, javaHome, jvmArguments, arguments, tasks, launchables, testIncludePatterns, testExcludePatterns,
                     progressListenerAdapter, buildProgressListenerAdapter, cancellationToken);
         }
     }
@@ -197,10 +203,23 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
     private final List<String> tasks;
     private final List<InternalLaunchable> launchables;
     private final List<String> testIncludePatterns;
+    private final List<String> testExcludePatterns;
 
-    private ConsumerOperationParameters(ConnectionParameters parameters, OutputStream stdout, OutputStream stderr, Boolean colorOutput, InputStream stdin,
-                                        File javaHome, List<String> jvmArguments, List<String> arguments, List<String> tasks, List<InternalLaunchable> launchables, List<String> testIncludePatterns,
-                                        ProgressListenerAdapter progressListener, BuildProgressListenerAdapter buildProgressListener, CancellationToken cancellationToken) {
+    private ConsumerOperationParameters(ConnectionParameters parameters,
+                                        OutputStream stdout,
+                                        OutputStream stderr,
+                                        Boolean colorOutput,
+                                        InputStream stdin,
+                                        File javaHome,
+                                        List<String> jvmArguments,
+                                        List<String> arguments,
+                                        List<String> tasks,
+                                        List<InternalLaunchable> launchables,
+                                        List<String> testIncludePatterns,
+                                        List<String> testExcludePatterns,
+                                        ProgressListenerAdapter progressListener,
+                                        BuildProgressListenerAdapter buildProgressListener,
+                                        CancellationToken cancellationToken) {
         this.parameters = parameters;
         this.stdout = stdout;
         this.stderr = stderr;
@@ -212,6 +231,7 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
         this.tasks = tasks;
         this.launchables = launchables;
         this.testIncludePatterns = testIncludePatterns;
+        this.testExcludePatterns = testExcludePatterns;
         this.progressListener = progressListener;
         this.buildProgressListener = buildProgressListener;
         this.cancellationToken = cancellationToken;
@@ -315,4 +335,6 @@ public class ConsumerOperationParameters implements BuildOperationParametersVers
     }
 
     public List<String> getTestIncludePatterns() { return testIncludePatterns; }
+
+    public List<String> getTestExcludePatterns() { return testExcludePatterns; }
 }

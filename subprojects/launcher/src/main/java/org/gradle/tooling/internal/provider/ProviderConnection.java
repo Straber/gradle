@@ -118,11 +118,12 @@ public class ProviderConnection {
         BuildEventConsumer buildEventConsumer = listenToTestProgress || listenToTaskProgress || listenToBuildProgress
                 ? new BuildProgressListenerInvokingBuildEventConsumer(buildProgressListener) : new NoOpBuildEventConsumer();
         List<String> testIncludePatterns = providerParameters.getTestIncludePatterns(null);
+        List<String> testExcludePatterns = providerParameters.getTestExcludePatterns(null);
         TestConfiguration testConfiguration = null;
-        if (testIncludePatterns!=null) {
-            testConfiguration = new TestConfiguration(testIncludePatterns);
+        if (testIncludePatterns!=null || testExcludePatterns!=null) {
+            testConfiguration = new TestConfiguration(testIncludePatterns, testExcludePatterns);
         }
-        BuildAction action = new BuildModelAction(startParameter, modelName, tasks != null, listenToTestProgress, listenToTaskProgress, listenToBuildProgress);
+        BuildAction action = new BuildModelAction(startParameter, modelName, tasks != null, listenToTestProgress, listenToTaskProgress, listenToBuildProgress, testConfiguration);
         return run(action, cancellationToken, buildEventConsumer, providerParameters, params);
     }
 
